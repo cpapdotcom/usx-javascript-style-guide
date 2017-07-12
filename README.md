@@ -1,4 +1,4 @@
-# Airbnb JavaScript Style Guide() {
+# USX JavaScript Style Guide() {
 
 *A mostly reasonable approach to JavaScript*
 
@@ -36,6 +36,9 @@ Other Style Guides
   1. [Type Casting & Coercion](#type-casting--coercion)
   1. [Naming Conventions](#naming-conventions)
   1. [Accessors](#accessors)
+  1. [Negation](#negation)
+  1. [Structure](#structure)
+  1. [Documentation Blocks](#docblock)
   1. [Contributors](#contributors)
   1. [License](#license)
 
@@ -402,53 +405,51 @@ Other Style Guides
     });
     ```
 
-**[⬆ back to top](#table-of-contents)**
+  <a name="arrays--bracket-newline"></a>
+    - [4.6](#arrays--bracket-newline) Use line breaks after open and before close array brackets if an array has multiple lines
 
-<a name="arrays--bracket-newline"></a>
-  - [4.6](#arrays--bracket-newline) Use line breaks after open and before close array brackets if an array has multiple lines
+    ```javascript
+    // bad
+    const arr = [[0, 1], [2, 3], [4, 5]];
 
-  ```javascript
-  // bad
-  const arr = [[0, 1], [2, 3], [4, 5]];
+    const arr = [
+      [0, 1], [2, 3], [4, 5]
+    ];
 
-  const arr = [
-    [0, 1], [2, 3], [4, 5]
-  ];
+    const objectInArray = [{
+      id: 1,
+    }, {
+      id: 2,
+    }];
 
-  const objectInArray = [{
-    id: 1,
-  }, {
-    id: 2,
-  }];
+    const numberInArray = [
+      1, 2,
+    ];
 
-  const numberInArray = [
-    1, 2,
-  ];
+    // good
+    const arr = [
+      [0, 1],
+      [2, 3],
+      [4, 5]
+    ];
 
-  // good
-  const arr = [
-    [0, 1],
-    [2, 3],
-    [4, 5]
-  ];
+    const objectInArray = [
+      {
+        id: 1
+      },
+      {
+        id: 2
+      }
+    ];
 
-  const objectInArray = [
-    {
-      id: 1
-    },
-    {
-      id: 2
-    }
-  ];
+    // acceptable on same line with 4 or less items
+    const numberInArray = [1, 2];
 
-  // acceptable on same line with 4 or less items
-  const numberInArray = [1, 2];
-
-  const numberInArray = [
-    1,
-    2
-  ];
-  ```
+    const numberInArray = [
+      1,
+      2
+    ];
+    ```
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -2439,7 +2440,7 @@ Other Style Guides
 
 ## Commas
 
-<a name="commas--leading-trailing"></a><a name="19.1"></a>
+  <a name="commas--leading-trailing"></a><a name="19.1"></a>
   - [20.1](#commas--leading-trailing) Leading commas: **Nope.** eslint: [`comma-style`](http://eslint.org/docs/rules/comma-style.html) jscs: [`requireCommaBeforeLineBreak`](http://jscs.info/rule/requireCommaBeforeLineBreak)
 
     ```javascript
@@ -2473,6 +2474,25 @@ Other Style Guides
       superPower: 'computers',
     };
     ```
+
+    <a name="commas--spacing"></a><a name="19.2"></a>
+    - [20.2](#commas--spacing) Single line values, parameters, imports, etc. should include a single space after the comma-separated entities.
+
+      ```javascript
+      // bad
+      const story = [foo,bar,baz];
+
+      import {modules,are,cool} from './example';
+
+      function (a,b,c) { ... }
+
+      // good
+      const story = [foo, bar, baz];
+
+      import { modules, are, cool } from './example';
+
+      function (a, b, c) { ... }
+      ```
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -2586,8 +2606,28 @@ Other Style Guides
     }
     ```
 
-  <a name="naming--camelCase"></a><a name="22.2"></a>
-  - [23.2](#naming--camelCase) Use camelCase when naming objects, functions, and instances. eslint: [`camelcase`](http://eslint.org/docs/rules/camelcase.html) jscs: [`requireCamelCaseOrUpperCaseIdentifiers`](http://jscs.info/rule/requireCamelCaseOrUpperCaseIdentifiers)
+  <a name="naming--semantic"></a><a name="22.2"></a>
+  - [23.2](#naming--semantic) Variables, constants, methods, and functions should be complete words, not shorthand. Be semantic with your naming. eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
+
+    > Why? Difficult and time consuming to implement a standard around all possible shorthand abbreviations. Shorthand abbreviations out of context can be difficult to understand. Just use the proper english language standard.
+
+    ```javascript
+    // bad
+    function getBtnCls() {
+      // ...
+    }
+
+    const qty = 5;
+
+    // good
+    function getButtonClass() {
+      // ...
+    }
+
+    const quantity = 5;
+
+  <a name="naming--camelCase"></a><a name="22.3"></a>
+  - [23.3](#naming--camelCase) Use camelCase when naming objects, functions, and instances. eslint: [`camelcase`](http://eslint.org/docs/rules/camelcase.html) jscs: [`requireCamelCaseOrUpperCaseIdentifiers`](http://jscs.info/rule/requireCamelCaseOrUpperCaseIdentifiers)
 
     ```javascript
     // bad
@@ -2600,8 +2640,8 @@ Other Style Guides
     function thisIsMyFunction() {}
     ```
 
-  <a name="naming--PascalCase"></a><a name="22.3"></a>
-  - [23.3](#naming--PascalCase) Use PascalCase only when naming constructors or classes. eslint: [`new-cap`](http://eslint.org/docs/rules/new-cap.html) jscs: [`requireCapitalizedConstructors`](http://jscs.info/rule/requireCapitalizedConstructors)
+  <a name="naming--PascalCase"></a><a name="22.4"></a>
+  - [23.4](#naming--PascalCase) Use PascalCase only when naming constructors or classes. eslint: [`new-cap`](http://eslint.org/docs/rules/new-cap.html) jscs: [`requireCapitalizedConstructors`](http://jscs.info/rule/requireCapitalizedConstructors)
 
     ```javascript
     // bad
@@ -2625,8 +2665,8 @@ Other Style Guides
     });
     ```
 
-  <a name="naming--leading-underscore"></a><a name="22.4"></a>
-  - [23.4](#naming--leading-underscore) Do not use trailing or leading underscores. eslint: [`no-underscore-dangle`](http://eslint.org/docs/rules/no-underscore-dangle.html) jscs: [`disallowDanglingUnderscores`](http://jscs.info/rule/disallowDanglingUnderscores)
+  <a name="naming--leading-underscore"></a><a name="22.5"></a>
+  - [23.5](#naming--leading-underscore) Do not use trailing or leading underscores. eslint: [`no-underscore-dangle`](http://eslint.org/docs/rules/no-underscore-dangle.html) jscs: [`disallowDanglingUnderscores`](http://jscs.info/rule/disallowDanglingUnderscores)
 
     > Why? JavaScript does not have the concept of privacy in terms of properties or methods. Although a leading underscore is a common convention to mean “private”, in fact, these properties are fully public, and as such, are part of your public API contract. This convention might lead developers to wrongly think that a change won’t count as breaking, or that tests aren’t needed. tl;dr: if you want something to be “private”, it must not be observably present.
 
@@ -2640,8 +2680,8 @@ Other Style Guides
     this.firstName = 'Panda';
     ```
 
-  <a name="naming--self-this"></a><a name="22.5"></a>
-  - [23.5](#naming--self-this) Don’t save references to `this`. Use arrow functions or [Function#bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind). jscs: [`disallowNodeTypes`](http://jscs.info/rule/disallowNodeTypes)
+  <a name="naming--self-this"></a><a name="22.6"></a>
+  - [23.6](#naming--self-this) Don’t save references to `this`. Use arrow functions or [Function#bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind). jscs: [`disallowNodeTypes`](http://jscs.info/rule/disallowNodeTypes)
 
     ```javascript
     // bad
@@ -2668,8 +2708,8 @@ Other Style Guides
     }
     ```
 
-  <a name="naming--filename-matches-export"></a><a name="22.6"></a>
-  - [23.6](#naming--filename-matches-export) A base filename should exactly match the name of its default export.
+  <a name="naming--filename-matches-export"></a><a name="22.7"></a>
+  - [23.7](#naming--filename-matches-export) A base filename should exactly match the name of its default export.
 
     ```javascript
     // file 1 contents
@@ -2704,8 +2744,8 @@ Other Style Guides
     // ^ supports both insideDirectory.js and insideDirectory/index.js
     ```
 
-  <a name="naming--camelCase-default-export"></a><a name="22.7"></a>
-  - [23.7](#naming--camelCase-default-export) Use camelCase when you export-default a function. Your filename should be identical to your function’s name.
+  <a name="naming--camelCase-default-export"></a><a name="22.8"></a>
+  - [23.8](#naming--camelCase-default-export) Use camelCase when you export-default a function. Your filename should be identical to your function’s name.
 
     ```javascript
     function makeStyleGuide() {
@@ -2715,8 +2755,8 @@ Other Style Guides
     export default makeStyleGuide;
     ```
 
-  <a name="naming--PascalCase-singleton"></a><a name="22.8"></a>
-  - [23.8](#naming--PascalCase-singleton) Use PascalCase when you export a constructor / class / singleton / function library / bare object.
+  <a name="naming--PascalCase-singleton"></a><a name="22.9"></a>
+  - [23.9](#naming--PascalCase-singleton) Use PascalCase when you export a constructor / class / singleton / function library / bare object.
 
     ```javascript
     const AirbnbStyleGuide = {
@@ -2728,7 +2768,7 @@ Other Style Guides
     ```
 
   <a name="naming--Acronyms-and-Initialisms"></a>
-  - [23.9](#naming--Acronyms-and-Initialisms) Acronyms and initialisms should always be all capitalized, or all lowercased.
+  - [23.10](#naming--Acronyms-and-Initialisms) Acronyms and initialisms should always be all capitalized, or all lowercased.
 
     > Why? Names are for readability, not to appease a computer algorithm.
 
@@ -2756,6 +2796,34 @@ Other Style Guides
     const Requests = [
       // ...
     ];
+    ```
+
+  <a name="naming--boolean-variable-naming"></a>
+  - [23.10](#naming--boolean-variable-naming) If the variable, property, or method is a boolean, or returns an expected Boolean response, use isVal() or hasVal().
+
+    > Why? It's semantic, easily readable and understandable, and denotes an expected Boolean response or output.
+
+    ```javascript
+    // bad
+    const disabled = true;
+
+    const active = () => this.isActivated;
+
+    function money () {
+        return true;
+    }
+
+    // very bad
+    const isDisabled = 'yep';
+
+    // good
+    const isDisabled = true;
+
+    const isActive = () => this.isActivated;
+
+    function hasMoney () {
+        return true;
+    }
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -2829,6 +2897,176 @@ Other Style Guides
 
 **[⬆ back to top](#table-of-contents)**
 
+## Negation
+
+  <a name="negation--syntax"></a><a name="25.1"></a>
+  - [25.1](#negation--syntax) Negation exclamations should be followed by a single space unless it is a Boolean casting double negation operation.
+
+    > Why? Easier to spot the negation action.
+
+    ```javascript
+    // bad
+    const value = !foo;
+
+    if (!bar)
+      return;
+
+    let isFaz = !!baz;
+
+    // good
+    const value = ! foo;
+
+    if (! bar)
+      return;
+
+    let isFaz = !! baz;
+
+    // best
+    const value = (! foo);
+
+    let isFaz = (!! baz);
+    ```
+
+**[⬆ back to top](#table-of-contents)**
+
+## Structure
+
+  <a name="structure--returns"></a><a name="26.1"></a>
+  - [26.1](#structure--returns) Use empty returns to keep code shallow and to avoid [Pyramid of Doom](https://en.wikipedia.org/wiki/Pyramid_of_doom_(programming)) whenever it is reasonable to do so.
+
+    > Why? JavaScript is prone to Pyramid of Doom issues and "[callback hell](http://callbackhell.com)". Endless nested conditionals add to the problem and are harder to understand as the nesting gets deeper.
+
+    ```javascript
+    // bad
+    const responseHandler = response => {
+        if (response) {
+            const { message, alertUser } = response;
+
+            console.log(message);
+
+            if (alertUser)
+                alert('Completed');
+        }
+    }
+
+    // good
+    const responseHandler = response => {
+        if (! response)
+            return;
+
+        const { message, alertUser } = response;
+
+        console.log(message);
+
+        if (alertUser)
+            alert('Completed');
+    }
+    ```
+
+**[⬆ back to top](#table-of-contents)**
+
+## Documentation Blocks
+
+  <a name="docblock--required"></a><a name="27.1"></a>
+  - [27.1](#docblock--required) All named functions and methods require a DocBlock.
+
+    > Why? It documents the code and eventually we plan to have a JavaScript auto-documentation generator which will rely on properly commented DocBlocks.
+
+    ```javascript
+    // bad
+    const responseHandler = response => {
+        if (! response)
+            return;
+
+        const { message, alertUser } = response;
+
+        console.log(message);
+
+        if (alertUser)
+            alert('Completed');
+    }
+
+    class Helper {
+        generateRandomNumber () {
+          ...
+        }
+    }
+
+    // good
+    /**
+     * Handles response from XHR request.
+     *
+     * @param Object response The AJAX response object.
+     */
+    const responseHandler = response => {
+        if (! response)
+            return;
+
+        const { message, alertUser } = response;
+
+        console.log(message);
+
+        if (alertUser)
+            alert('Completed');
+    }
+
+    class Helper {
+        /**
+         * Generates a pseudo-random number.
+         *
+         * @return Number
+         */
+        generateRandomNumber () {
+          ...
+
+          return number;
+        }
+    }
+    ```
+
+    <a name="docblock--structure"></a><a name="27.2"></a>
+    - [27.3](#docblock--structure) Follow the conventions of [JSDoc](http://usejsdoc.org). Require a spacing newline between description and initial block tags. Require a spacing newline between different block tag groupings.
+
+      ```javascript
+      // bad
+      /**
+       * Generates a pseudo-random number.
+       * @return {Number}
+       */
+
+      /**
+       * Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
+       * dignissimos, odit unde tempore maxime deserunt nulla, debitis
+       * id culpa earum. Fugit in nam magnam.
+       * @param {Object}   foo    Consectetur adipisicing elit.
+       * @param {Function} barbaz Maxime deserunt nulla.
+       * @see https://github.com/airbnb/javascript
+       * @return {Object}
+       */
+
+      // good
+      /**
+       * Generates a pseudo-random number.
+       *
+       * @return {Number}
+       */
+
+      /**
+       * Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
+       * dignissimos, odit unde tempore maxime deserunt nulla, debitis
+       * id culpa earum. Fugit in nam magnam.
+       *
+       * @param {Object}   foo    Consectetur adipisicing elit.
+       * @param {Function} barbaz Maxime deserunt nulla.
+       *
+       * @see https://github.com/airbnb/javascript
+       *
+       * @return {Object}
+       */
+      ```
+
+**[⬆ back to top](#table-of-contents)**
+
 ## Contributors
 
   - [View Contributors](https://github.com/airbnb/javascript/graphs/contributors)
@@ -2859,9 +3097,5 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 **[⬆ back to top](#table-of-contents)**
-
-## Amendments
-
-We encourage you to fork this guide and change the rules to fit your team’s style guide. Below, you may list some amendments to the style guide. This allows you to periodically update your style guide without having to deal with merge conflicts.
 
 # };
