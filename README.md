@@ -2930,7 +2930,7 @@ Other Style Guides
 ## Negation
 
   <a name="negation--syntax"></a><a name="25.1"></a>
-  - [25.1](#negation--syntax) Negation exclamations should be followed by a single space unless it is a Boolean casting double negation operation.
+  - [25.1](#negation--syntax) Negation exclamations should be followed by a single space. Wrapping negation in paranethesis can provide added readablility.
 
     > Why? Easier to spot the negation action.
 
