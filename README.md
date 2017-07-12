@@ -1169,7 +1169,7 @@ Other Style Guides
     ```
 
   <a name="classes--no-extending-natives"></a>
-  - [9.6](#classes--no-extending-natives) Do not extend native objects.
+  - [9.7](#classes--no-extending-natives) Do not extend native objects.
 
     ```javascript
     // very bad
