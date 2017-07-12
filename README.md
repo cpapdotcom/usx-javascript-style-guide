@@ -2636,28 +2636,8 @@ Other Style Guides
     }
     ```
 
-  <a name="naming--semantic"></a><a name="22.2"></a>
-  - [23.2](#naming--semantic) Variables, constants, methods, and functions should be complete words, not shorthand. Be semantic with your naming. eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
-
-    > Why? Difficult and time consuming to implement a standard around all possible shorthand abbreviations. Shorthand abbreviations out of context can be difficult to understand. Just use the proper english language standard.
-
-    ```javascript
-    // bad
-    function getBtnCls() {
-      // ...
-    }
-
-    const qty = 5;
-
-    // good
-    function getButtonClass() {
-      // ...
-    }
-
-    const quantity = 5;
-
-  <a name="naming--camelCase"></a><a name="22.3"></a>
-  - [23.3](#naming--camelCase) Use camelCase when naming objects, functions, and instances. eslint: [`camelcase`](http://eslint.org/docs/rules/camelcase.html) jscs: [`requireCamelCaseOrUpperCaseIdentifiers`](http://jscs.info/rule/requireCamelCaseOrUpperCaseIdentifiers)
+  <a name="naming--camelCase"></a><a name="22.2"></a>
+  - [23.2](#naming--camelCase) Use camelCase when naming objects, functions, and instances. eslint: [`camelcase`](http://eslint.org/docs/rules/camelcase.html) jscs: [`requireCamelCaseOrUpperCaseIdentifiers`](http://jscs.info/rule/requireCamelCaseOrUpperCaseIdentifiers)
 
     ```javascript
     // bad
@@ -2670,8 +2650,8 @@ Other Style Guides
     function thisIsMyFunction() {}
     ```
 
-  <a name="naming--PascalCase"></a><a name="22.4"></a>
-  - [23.4](#naming--PascalCase) Use PascalCase only when naming constructors or classes. eslint: [`new-cap`](http://eslint.org/docs/rules/new-cap.html) jscs: [`requireCapitalizedConstructors`](http://jscs.info/rule/requireCapitalizedConstructors)
+  <a name="naming--PascalCase"></a><a name="22.3"></a>
+  - [23.3](#naming--PascalCase) Use PascalCase only when naming constructors or classes. eslint: [`new-cap`](http://eslint.org/docs/rules/new-cap.html) jscs: [`requireCapitalizedConstructors`](http://jscs.info/rule/requireCapitalizedConstructors)
 
     ```javascript
     // bad
@@ -2695,8 +2675,8 @@ Other Style Guides
     });
     ```
 
-  <a name="naming--leading-underscore"></a><a name="22.5"></a>
-  - [23.5](#naming--leading-underscore) Do not use trailing or leading underscores. eslint: [`no-underscore-dangle`](http://eslint.org/docs/rules/no-underscore-dangle.html) jscs: [`disallowDanglingUnderscores`](http://jscs.info/rule/disallowDanglingUnderscores)
+  <a name="naming--leading-underscore"></a><a name="22.4"></a>
+  - [23.4](#naming--leading-underscore) Do not use trailing or leading underscores. eslint: [`no-underscore-dangle`](http://eslint.org/docs/rules/no-underscore-dangle.html) jscs: [`disallowDanglingUnderscores`](http://jscs.info/rule/disallowDanglingUnderscores)
 
     > Why? JavaScript does not have the concept of privacy in terms of properties or methods. Although a leading underscore is a common convention to mean “private”, in fact, these properties are fully public, and as such, are part of your public API contract. This convention might lead developers to wrongly think that a change won’t count as breaking, or that tests aren’t needed. tl;dr: if you want something to be “private”, it must not be observably present.
 
@@ -2710,8 +2690,8 @@ Other Style Guides
     this.firstName = 'Panda';
     ```
 
-  <a name="naming--self-this"></a><a name="22.6"></a>
-  - [23.6](#naming--self-this) Don’t save references to `this`. Use arrow functions or [Function#bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind). jscs: [`disallowNodeTypes`](http://jscs.info/rule/disallowNodeTypes)
+  <a name="naming--self-this"></a><a name="22.5"></a>
+  - [23.5](#naming--self-this) Don’t save references to `this`. Use arrow functions or [Function#bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind). jscs: [`disallowNodeTypes`](http://jscs.info/rule/disallowNodeTypes)
 
     ```javascript
     // bad
@@ -2738,8 +2718,8 @@ Other Style Guides
     }
     ```
 
-  <a name="naming--filename-matches-export"></a><a name="22.7"></a>
-  - [23.7](#naming--filename-matches-export) A base filename should exactly match the name of its default export.
+  <a name="naming--filename-matches-export"></a><a name="22.6"></a>
+  - [23.6](#naming--filename-matches-export) A base filename should exactly match the name of its default export.
 
     ```javascript
     // file 1 contents
@@ -2774,8 +2754,8 @@ Other Style Guides
     // ^ supports both insideDirectory.js and insideDirectory/index.js
     ```
 
-  <a name="naming--camelCase-default-export"></a><a name="22.8"></a>
-  - [23.8](#naming--camelCase-default-export) Use camelCase when you export-default a function. Your filename should be identical to your function’s name.
+  <a name="naming--camelCase-default-export"></a><a name="22.7"></a>
+  - [23.7](#naming--camelCase-default-export) Use camelCase when you export-default a function. Your filename should be identical to your function’s name.
 
     ```javascript
     function makeStyleGuide() {
@@ -2785,8 +2765,8 @@ Other Style Guides
     export default makeStyleGuide;
     ```
 
-  <a name="naming--PascalCase-singleton"></a><a name="22.9"></a>
-  - [23.9](#naming--PascalCase-singleton) Use PascalCase when you export a constructor / class / singleton / function library / bare object.
+  <a name="naming--PascalCase-singleton"></a><a name="22.8"></a>
+  - [23.8](#naming--PascalCase-singleton) Use PascalCase when you export a constructor / class / singleton / function library / bare object.
 
     ```javascript
     const AirbnbStyleGuide = {
@@ -2798,7 +2778,7 @@ Other Style Guides
     ```
 
   <a name="naming--Acronyms-and-Initialisms"></a>
-  - [23.10](#naming--Acronyms-and-Initialisms) Acronyms and initialisms should always be all capitalized, or all lowercased.
+  - [23.9](#naming--Acronyms-and-Initialisms) Acronyms and initialisms should always be all capitalized, or all lowercased.
 
     > Why? Names are for readability, not to appease a computer algorithm.
 
@@ -2827,6 +2807,25 @@ Other Style Guides
       // ...
     ];
     ```
+  <a name="naming--semantic"></a><a name="23.10"></a>
+  - [23.10](#naming--semantic) Variables, constants, methods, and functions should be complete words, not shorthand. Be semantic with your naming. eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
+
+    > Why? Difficult and time consuming to implement a standard around all possible shorthand abbreviations. Shorthand abbreviations out of context can be difficult to understand. Just use the proper english language standard.
+
+    ```javascript
+    // bad
+    function getBtnCls() {
+      // ...
+    }
+
+    const qty = 5;
+
+    // good
+    function getButtonClass() {
+      // ...
+    }
+
+    const quantity = 5;
 
   <a name="naming--boolean-variable-naming"></a>
   - [23.11](#naming--boolean-variable-naming) If the variable, property, or method is a boolean, or returns an expected Boolean response, use isLabel or hasLabel.
