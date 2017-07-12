@@ -922,7 +922,7 @@ Other Style Guides
     [1, 2, 3].map(number => `A string containing the ${number}.`);
 
     // good
-    [1, 2, 3].map((number) => {
+    [1, 2, 3].map(number => {
       const nextNumber = number + 1;
       return `A string containing the ${nextNumber}.`;
     });
@@ -1166,6 +1166,36 @@ Other Style Guides
     class Foo {
       bar() { return 2; }
     }
+    ```
+
+  <a name="classes--no-extending-natives"></a>
+  - [9.6](#classes--no-extending-natives) Do not extend native objects.
+
+    ```javascript
+    // very bad
+    Array.prototype.remove = function (member) {
+        ...
+    }
+
+    Array.prototype.isSorted = function (member) {
+        ...
+    }
+
+    // good
+    const removeFromArray = (collection) => {
+        ...
+    }
+
+    const cleanedArray = removeFromArray(array, [1, 2]);
+
+    // best (use our helper libraries like [LoDash](https://lodash.com/docs) and [is.js](http://is.js.org) when possible)
+    import _pull from 'lodash/pull';
+    import is from 'is_js';
+
+    const cleanedArray = _pull(array, 1, 2);
+
+    if (is.sorted(array))
+        return true;
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -2475,24 +2505,24 @@ Other Style Guides
     };
     ```
 
-    <a name="commas--spacing"></a><a name="19.2"></a>
-    - [20.2](#commas--spacing) Single line values, parameters, imports, etc. should include a single space after the comma-separated entities.
+  <a name="commas--spacing"></a><a name="19.2"></a>
+  - [20.2](#commas--spacing) Single line values, parameters, imports, etc. should include a single space after the comma-separated entities.
 
-      ```javascript
-      // bad
-      const story = [foo,bar,baz];
+    ```javascript
+    // bad
+    const story = [foo,bar,baz];
 
-      import {modules,are,cool} from './example';
+    import {modules,are,cool} from './example';
 
-      function (a,b,c) { ... }
+    function (a,b,c) { ... }
 
-      // good
-      const story = [foo, bar, baz];
+    // good
+    const story = [foo, bar, baz];
 
-      import { modules, are, cool } from './example';
+    import { modules, are, cool } from './example';
 
-      function (a, b, c) { ... }
-      ```
+    function (a, b, c) { ... }
+    ```
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -2799,9 +2829,9 @@ Other Style Guides
     ```
 
   <a name="naming--boolean-variable-naming"></a>
-  - [23.10](#naming--boolean-variable-naming) If the variable, property, or method is a boolean, or returns an expected Boolean response, use isVal() or hasVal().
+  - [23.11](#naming--boolean-variable-naming) If the variable, property, or method is a boolean, or returns an expected Boolean response, use isLabel or hasLabel.
 
-    > Why? It's semantic, easily readable and understandable, and denotes an expected Boolean response or output.
+    > Why? It's semantic, easy to read and understand, and clearly denotes an expected Boolean response or output.
 
     ```javascript
     // bad
@@ -3024,46 +3054,46 @@ Other Style Guides
     }
     ```
 
-    <a name="docblock--structure"></a><a name="27.2"></a>
-    - [27.3](#docblock--structure) Follow the conventions of [JSDoc](http://usejsdoc.org). Require a spacing newline between description and initial block tags. Require a spacing newline between different block tag groupings.
+  <a name="docblock--structure"></a><a name="27.2"></a>
+  - [27.2](#docblock--structure) Follow the conventions of [JSDoc](http://usejsdoc.org). Require a spacing newline between description and initial block tags. Require a spacing newline between different block tag groupings.
 
-      ```javascript
-      // bad
-      /**
-       * Generates a pseudo-random number.
-       * @return {Number}
-       */
+    ```javascript
+    // bad
+    /**
+     * Generates a pseudo-random number.
+     * @return {Number}
+     */
 
-      /**
-       * Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
-       * dignissimos, odit unde tempore maxime deserunt nulla, debitis
-       * id culpa earum. Fugit in nam magnam.
-       * @param {Object}   foo    Consectetur adipisicing elit.
-       * @param {Function} barbaz Maxime deserunt nulla.
-       * @see https://github.com/airbnb/javascript
-       * @return {Object}
-       */
+    /**
+     * Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
+     * dignissimos, odit unde tempore maxime deserunt nulla, debitis
+     * id culpa earum. Fugit in nam magnam.
+     * @param {Object}   foo    Consectetur adipisicing elit.
+     * @param {Function} barbaz Maxime deserunt nulla.
+     * @see https://github.com/airbnb/javascript
+     * @return {Object}
+     */
 
-      // good
-      /**
-       * Generates a pseudo-random number.
-       *
-       * @return {Number}
-       */
+    // good
+    /**
+     * Generates a pseudo-random number.
+     *
+     * @return {Number}
+     */
 
-      /**
-       * Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
-       * dignissimos, odit unde tempore maxime deserunt nulla, debitis
-       * id culpa earum. Fugit in nam magnam.
-       *
-       * @param {Object}   foo    Consectetur adipisicing elit.
-       * @param {Function} barbaz Maxime deserunt nulla.
-       *
-       * @see https://github.com/airbnb/javascript
-       *
-       * @return {Object}
-       */
-      ```
+    /**
+     * Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
+     * dignissimos, odit unde tempore maxime deserunt nulla, debitis
+     * id culpa earum. Fugit in nam magnam.
+     *
+     * @param {Object}   foo    Consectetur adipisicing elit.
+     * @param {Function} barbaz Maxime deserunt nulla.
+     *
+     * @see https://github.com/airbnb/javascript
+     *
+     * @return {Object}
+     */
+    ```
 
 **[⬆ back to top](#table-of-contents)**
 
