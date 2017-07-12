@@ -409,8 +409,10 @@ Other Style Guides
 
   ```javascript
   // bad
+  const arr = [[0, 1], [2, 3], [4, 5]];
+
   const arr = [
-    [0, 1], [2, 3], [4, 5],
+    [0, 1], [2, 3], [4, 5]
   ];
 
   const objectInArray = [{
@@ -424,20 +426,27 @@ Other Style Guides
   ];
 
   // good
-  const arr = [[0, 1], [2, 3], [4, 5]];
+  const arr = [
+    [0, 1],
+    [2, 3],
+    [4, 5]
+  ];
 
   const objectInArray = [
     {
-      id: 1,
+      id: 1
     },
     {
-      id: 2,
-    },
+      id: 2
+    }
   ];
+
+  // acceptable on same line with 4 or less items
+  const numberInArray = [1, 2];
 
   const numberInArray = [
     1,
-    2,
+    2
   ];
   ```
 
@@ -529,9 +538,9 @@ Other Style Guides
     ```
 
   <a name="strings--line-length"></a><a name="6.2"></a>
-  - [6.2](#strings--line-length) Strings that cause the line to go over 100 characters should not be written across multiple lines using string concatenation.
+  - [6.2](#strings--line-length) Strings that cause the line to go over 175 characters should not be written across multiple lines using string concatenation but should use template strings.
 
-    > Why? Broken strings are painful to work with and make code less searchable.
+    > Why? Broken strings are painful to work with and make code less readable and searchable.
 
     ```javascript
     // bad
@@ -545,8 +554,13 @@ Other Style Guides
       'of Batman. When you stop to think about how Batman had anything to do ' +
       'with this, you would get nowhere fast.';
 
-    // good
+    // bad
     const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
+
+    // good
+    const errorMessage = `This is a super long error that was thrown because
+      of Batman. When you stop to think about how Batman had anything to do
+      with this, you would get nowhere fast.`;
     ```
 
   <a name="es6-template-literals"></a><a name="6.4"></a>
@@ -556,22 +570,20 @@ Other Style Guides
 
     ```javascript
     // bad
-    function sayHi(name) {
-      return 'How are you, ' + name + '?';
-    }
-
-    // bad
-    function sayHi(name) {
+    function sayHi (name) {
       return ['How are you, ', name, '?'].join();
     }
 
-    // bad
-    function sayHi(name) {
+    function sayHi (name) {
       return `How are you, ${ name }?`;
     }
 
     // good
-    function sayHi(name) {
+    function sayHi (name) {
+      return 'How are you, ' + name + '?';
+    }
+
+    function sayHi (name) {
       return `How are you, ${name}?`;
     }
     ```
@@ -633,26 +645,6 @@ Other Style Guides
 
   <a name="functions--in-blocks"></a><a name="7.3"></a>
   - [7.3](#functions--in-blocks) Never declare a function in a non-function block (`if`, `while`, etc). Assign the function to a variable instead. Browsers will allow you to do it, but they all interpret it differently, which is bad news bears. eslint: [`no-loop-func`](http://eslint.org/docs/rules/no-loop-func.html)
-
-  <a name="functions--note-on-blocks"></a><a name="7.4"></a>
-  - [7.4](#functions--note-on-blocks) **Note:** ECMA-262 defines a `block` as a list of statements. A function declaration is not a statement. [Read ECMA-262’s note on this issue](http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf#page=97).
-
-    ```javascript
-    // bad
-    if (currentUser) {
-      function test() {
-        console.log('Nope.');
-      }
-    }
-
-    // good
-    let test;
-    if (currentUser) {
-      test = () => {
-        console.log('Yup.');
-      };
-    }
-    ```
 
   <a name="functions--arguments-shadow"></a><a name="7.5"></a>
   - [7.5](#functions--arguments-shadow) Never name a parameter `arguments`. This will take precedence over the `arguments` object that is given to every function scope.
@@ -762,7 +754,7 @@ Other Style Guides
   <a name="functions--signature-spacing"></a><a name="7.11"></a>
   - [7.11](#functions--signature-spacing) Spacing in a function signature. eslint: [`space-before-function-paren`](http://eslint.org/docs/rules/space-before-function-paren) [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks)
 
-    > Why? Consistency is good, and you shouldn’t have to add or remove a space when adding or removing a name.
+    > Why? Consistency is good, and the syntax is easier to read.
 
     ```javascript
     // bad
@@ -773,6 +765,7 @@ Other Style Guides
     // good
     const x = function () {};
     const y = function a() {};
+    const z = function a () {};
     ```
 
   <a name="functions--mutate-params"></a><a name="7.12"></a>
@@ -782,13 +775,18 @@ Other Style Guides
 
     ```javascript
     // bad
-    function f1(obj) {
+    function f1 (obj) {
       obj.key = 1;
     }
 
     // good
-    function f2(obj) {
-      const key = Object.prototype.hasOwnProperty.call(obj, 'key') ? obj.key : 1;
+    function f2 (obj) {
+      const key = obj.key || 1;
+    }
+
+    // best
+    function f2 (obj) {
+      const { key = 1 } = obj;
     }
     ```
 
@@ -842,18 +840,30 @@ Other Style Guides
     ```
 
   <a name="functions--signature-invocation-indentation"></a>
-  - [7.15](#functions--signature-invocation-indentation) Functions with multiline signatures, or invocations, should be indented just like every other multiline list in this guide: with each item on a line by itself, with a trailing comma on the last item.
+  - [7.15](#functions--signature-invocation-indentation) Functions with four or less arguments may be on a single line unless the character column count exceeds 175. Functions with multiline signatures, or invocations, should be indented just like every other multiline list in this guide: with each item on a line by itself.
 
     ```javascript
     // bad
-    function foo(bar,
+    function foo (bar,
                  baz,
                  quux) {
       // ...
     }
 
+    function foo (too, many, parameters, for, single, line) {
+      // ...
+    }
+
+    console.log(foo,
+      bar,
+      baz);
+
     // good
-    function foo(
+    function foo (bar, baz, quux) {
+      // ...
+    }
+
+    function foo (
       bar,
       baz,
       quux,
@@ -861,12 +871,8 @@ Other Style Guides
       // ...
     }
 
-    // bad
-    console.log(foo,
-      bar,
-      baz);
+    console.log(foo, bar, baz);
 
-    // good
     console.log(
       foo,
       bar,
@@ -967,7 +973,7 @@ Other Style Guides
     ```
 
   <a name="arrows--one-arg-parens"></a><a name="8.4"></a>
-  - [8.4](#arrows--one-arg-parens) If your function takes a single argument and doesn’t use braces, omit the parentheses. Otherwise, always include parentheses around arguments for clarity and consistency. Note: it is also acceptable to always use parentheses, in which case use the [“always” option](http://eslint.org/docs/rules/arrow-parens#always) for eslint or do not include [`disallowParenthesesAroundArrowParam`](http://jscs.info/rule/disallowParenthesesAroundArrowParam) for jscs. eslint: [`arrow-parens`](http://eslint.org/docs/rules/arrow-parens.html) jscs:  [`disallowParenthesesAroundArrowParam`](http://jscs.info/rule/disallowParenthesesAroundArrowParam)
+  - [8.4](#arrows--one-arg-parens) If your function takes a single argument always omit the parentheses. jscs:  [`disallowParenthesesAroundArrowParam`](http://jscs.info/rule/disallowParenthesesAroundArrowParam)
 
     > Why? Less visual clutter.
 
@@ -984,36 +990,16 @@ Other Style Guides
     ));
 
     // bad
-    [1, 2, 3].map(x => {
-      const y = x + 1;
-      return x * y;
-    });
-
-    // good
     [1, 2, 3].map((x) => {
       const y = x + 1;
       return x * y;
     });
-    ```
-
-  <a name="arrows--confusing"></a><a name="8.5"></a>
-  - [8.5](#arrows--confusing) Avoid confusing arrow function syntax (`=>`) with comparison operators (`<=`, `>=`). eslint: [`no-confusing-arrow`](http://eslint.org/docs/rules/no-confusing-arrow)
-
-    ```javascript
-    // bad
-    const itemHeight = item => item.height > 256 ? item.largeSize : item.smallSize;
-
-    // bad
-    const itemHeight = (item) => item.height > 256 ? item.largeSize : item.smallSize;
 
     // good
-    const itemHeight = item => (item.height > 256 ? item.largeSize : item.smallSize);
-
-    // good
-    const itemHeight = (item) => {
-      const { height, largeSize, smallSize } = item;
-      return height > 256 ? largeSize : smallSize;
-    };
+    [1, 2, 3].map(x => {
+      const y = x + 1;
+      return x * y;
+    });
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -1301,15 +1287,17 @@ Other Style Guides
     ```
 
   <a name="modules--multiline-imports-over-newlines"></a>
-  - [10.8](#modules--multiline-imports-over-newlines) Multiline imports should be indented just like multiline array and object literals.
+  - [10.8](#modules--multiline-imports-over-newlines) Multiple imports are allowed with 4 or less entities, and the character column count does not exceed 175. Multiline imports should be indented just like multiline array and object literals.
 
-    > Why? The curly braces follow the same indentation rules as every other curly brace block in the style guide, as do the trailing commas.
+    > Why? The curly braces follow the same indentation rules as every other curly brace block in the style guide.
 
     ```javascript
     // bad
     import {longNameA, longNameB, longNameC, longNameD, longNameE} from 'path';
 
     // good
+    import { nameA, nameB, nameC } from 'path';
+
     import {
       longNameA,
       longNameB,
@@ -1381,11 +1369,6 @@ Other Style Guides
     // best (keeping it functional)
     const increasedByOne = numbers.map(num => num + 1);
     ```
-
-  <a name="generators--nope"></a><a name="11.2"></a>
-  - [11.2](#generators--nope) Don’t use generators for now.
-
-    > Why? They don’t transpile well to ES5.
 
   <a name="generators--spacing"></a>
   - [11.3](#generators--spacing) If you must use generators, or if you disregard [our advice](#generators--nope), make sure their function signature is spaced properly. eslint: [`generator-star-spacing`](http://eslint.org/docs/rules/generator-star-spacing)
@@ -1777,7 +1760,9 @@ Other Style Guides
     ```
 
   <a name="comparison--shortcuts"></a><a name="15.3"></a>
-  - [15.3](#comparison--shortcuts) Use shortcuts for booleans, but explicit comparisons for strings and numbers.
+  - [15.3](#comparison--shortcuts) Use truthy/falsey shortcuts for conditionals when viable.
+
+    > Why? It provides a clean and consistent conditional syntax.
 
     ```javascript
     // bad
@@ -1791,22 +1776,22 @@ Other Style Guides
     }
 
     // bad
-    if (name) {
+    if (name === '') {
       // ...
     }
 
     // good
-    if (name !== '') {
+    if (! name) {
       // ...
     }
 
     // bad
-    if (collection.length) {
-      // ...
+    if (collection.length > 0) {
+      // ...0
     }
 
     // good
-    if (collection.length > 0) {
+    if (collection.length) {
       // ...
     }
     ```
@@ -1910,27 +1895,28 @@ Other Style Guides
 ## Blocks
 
   <a name="blocks--braces"></a><a name="16.1"></a>
-  - [16.1](#blocks--braces) Use braces with all multi-line blocks.
+  - [16.1](#blocks--braces) Any single event block may forgo braces with proper newline indention. More than a single line must use braces. Use braces with all multi-line blocks.
+
+    >Why? It's clean, it's concise, and removes superfluous braces code bloat since so many conditionals are followed by a single statement. Same line blocks without braces are difficult to spot at a glance.
 
     ```javascript
     // bad
-    if (test)
-      return false;
-
-    // good
     if (test) return false;
 
     // good
+    if (test)
+        return false;
+
     if (test) {
-      return false;
+        return false;
     }
 
     // bad
-    function foo() { return false; }
+    function foo () { return false; }
 
     // good
-    function bar() {
-      return false;
+    function bar () {
+        return false;
     }
     ```
 
@@ -2121,48 +2107,17 @@ Other Style Guides
     }
     ```
 
-  <a name="comments--actionitems"></a><a name="17.3"></a>
-  - [18.4](#comments--actionitems) Prefixing your comments with `FIXME` or `TODO` helps other developers quickly understand if you're pointing out a problem that needs to be revisited, or if you're suggesting a solution to the problem that needs to be implemented. These are different than regular comments because they are actionable. The actions are `FIXME: -- need to figure this out` or `TODO: -- need to implement`.
-
-  <a name="comments--fixme"></a><a name="17.4"></a>
-  - [18.5](#comments--fixme) Use `// FIXME:` to annotate problems.
-
-    ```javascript
-    class Calculator extends Abacus {
-      constructor() {
-        super();
-
-        // FIXME: shouldn’t use a global here
-        total = 0;
-      }
-    }
-    ```
-
-  <a name="comments--todo"></a><a name="17.5"></a>
-  - [18.6](#comments--todo) Use `// TODO:` to annotate solutions to problems.
-
-    ```javascript
-    class Calculator extends Abacus {
-      constructor() {
-        super();
-
-        // TODO: total should be configurable by an options param
-        this.total = 0;
-      }
-    }
-    ```
-
 **[⬆ back to top](#table-of-contents)**
 
 ## Whitespace
 
   <a name="whitespace--spaces"></a><a name="18.1"></a>
-  - [19.1](#whitespace--spaces) Use soft tabs (space character) set to 2 spaces. eslint: [`indent`](http://eslint.org/docs/rules/indent.html) jscs: [`validateIndentation`](http://jscs.info/rule/validateIndentation)
+  - [19.1](#whitespace--spaces) Use soft tabs (space character) set to 4 spaces. eslint: [`indent`](http://eslint.org/docs/rules/indent.html) jscs: [`validateIndentation`](http://jscs.info/rule/validateIndentation)
 
     ```javascript
     // bad
     function foo() {
-    ∙∙∙∙let name;
+    ∙∙let name;
     }
 
     // bad
@@ -2172,7 +2127,7 @@ Other Style Guides
 
     // good
     function baz() {
-    ∙∙let name;
+    ∙∙∙∙let name;
     }
     ```
 
@@ -2204,7 +2159,9 @@ Other Style Guides
     ```
 
   <a name="whitespace--around-keywords"></a><a name="18.3"></a>
-  - [19.3](#whitespace--around-keywords) Place 1 space before the opening parenthesis in control statements (`if`, `while` etc.). Place no space between the argument list and the function name in function calls and declarations. eslint: [`keyword-spacing`](http://eslint.org/docs/rules/keyword-spacing.html) jscs: [`requireSpaceAfterKeywords`](http://jscs.info/rule/requireSpaceAfterKeywords)
+  - [19.3](#whitespace--around-keywords) Place 1 space before the opening parenthesis in control statements (`if`, `while` etc.). Place 1 space between the argument list and the function name in function declarations. Place no space between the argument list and the function name in function calls eslint: [`keyword-spacing`](http://eslint.org/docs/rules/keyword-spacing.html) jscs: [`requireSpaceAfterKeywords`](http://jscs.info/rule/requireSpaceAfterKeywords)
+
+    > Why? Consistency is good, and the syntax is easier to read
 
     ```javascript
     // bad
@@ -2212,20 +2169,22 @@ Other Style Guides
       fight ();
     }
 
+    function fight() {
+      console.log('Swooosh!');
+    }
+
+    flight ();
+
     // good
     if (isJedi) {
       fight();
     }
 
-    // bad
     function fight () {
       console.log ('Swooosh!');
     }
 
-    // good
-    function fight() {
-      console.log('Swooosh!');
-    }
+    flight();
     ```
 
   <a name="whitespace--infix-ops"></a><a name="18.4"></a>
@@ -2270,41 +2229,39 @@ Other Style Guides
 
     ```javascript
     // bad
-    $('#items').find('.selected').highlight().end().find('.open').updateCount();
+    Highlighter('#items').find('.selected').highlight().end().find('.open').updateCount();
 
-    // bad
-    $('#items').
-      find('.selected').
-        highlight().
-        end().
-      find('.open').
-        updateCount();
-
-    // good
-    $('#items')
+    Highlighter('#items')
       .find('.selected')
         .highlight()
         .end()
       .find('.open')
         .updateCount();
 
-    // bad
     const leds = stage.selectAll('.led').data(data).enter().append('svg:svg').classed('led', true)
         .attr('width', (radius + margin) * 2).append('svg:g')
         .attr('transform', `translate(${radius + margin},${radius + margin})`)
         .call(tron.led);
 
     // good
-    const leds = stage.selectAll('.led')
+    Highlighter('#items')
+      .find('.selected')
+      .highlight()
+      .end()
+      .find('.open')
+      .updateCount();
+
+    const leds = stage
+        .selectAll('.led')
         .data(data)
-      .enter().append('svg:svg')
+        .enter()
+        .append('svg:svg')
         .classed('led', true)
         .attr('width', (radius + margin) * 2)
-      .append('svg:g')
-        .attr('transform', `translate(${radius + margin},${radius + margin})`)
+        .append('svg:g')
+        .attr('transform', `translate(${radius + margin}, ${radius + margin})`)
         .call(tron.led);
 
-    // good
     const leds = stage.selectAll('.led').data(data);
     ```
 
@@ -2438,7 +2395,7 @@ Other Style Guides
     ```
 
   <a name="whitespace--in-braces"></a><a name="18.11"></a>
-  - [19.11](#whitespace--in-braces) Add spaces inside curly braces. eslint: [`object-curly-spacing`](http://eslint.org/docs/rules/object-curly-spacing.html) jscs: [`requireSpacesInsideObjectBrackets`](http://jscs.info/rule/requireSpacesInsideObjectBrackets)
+  - [19.11](#whitespace--in-braces) Add spaces inside curly braces for single key-value pair object literals. Anything beyond a single key-value should be a multiline object eslint: [`object-curly-spacing`](http://eslint.org/docs/rules/object-curly-spacing.html) jscs: [`requireSpacesInsideObjectBrackets`](http://jscs.info/rule/requireSpacesInsideObjectBrackets)
 
     ```javascript
     // bad
@@ -2449,7 +2406,7 @@ Other Style Guides
     ```
 
   <a name="whitespace--max-len"></a><a name="18.12"></a>
-  - [19.12](#whitespace--max-len) Avoid having lines of code that are longer than 100 characters (including whitespace). Note: per [above](#strings--line-length), long strings are exempt from this rule, and should not be broken up. eslint: [`max-len`](http://eslint.org/docs/rules/max-len.html) jscs: [`maximumLineLength`](http://jscs.info/rule/maximumLineLength)
+  - [19.12](#whitespace--max-len) Avoid having lines of code that are longer than 175 characters (including whitespace). Note: per [above](#strings--line-length), long strings are exempt from this rule, and should not be broken up. eslint: [`max-len`](http://eslint.org/docs/rules/max-len.html) jscs: [`maximumLineLength`](http://jscs.info/rule/maximumLineLength)
 
     > Why? This ensures readability and maintainability.
 
@@ -2515,102 +2472,6 @@ Other Style Guides
       birthYear: 1815,
       superPower: 'computers',
     };
-    ```
-
-  <a name="commas--dangling"></a><a name="19.2"></a>
-  - [20.2](#commas--dangling) Additional trailing comma: **Yup.** eslint: [`comma-dangle`](http://eslint.org/docs/rules/comma-dangle.html) jscs: [`requireTrailingComma`](http://jscs.info/rule/requireTrailingComma)
-
-    > Why? This leads to cleaner git diffs. Also, transpilers like Babel will remove the additional trailing comma in the transpiled code which means you don’t have to worry about the [trailing comma problem](https://github.com/airbnb/javascript/blob/es5-deprecated/es5/README.md#commas) in legacy browsers.
-
-    ```diff
-    // bad - git diff without trailing comma
-    const hero = {
-         firstName: 'Florence',
-    -    lastName: 'Nightingale'
-    +    lastName: 'Nightingale',
-    +    inventorOf: ['coxcomb chart', 'modern nursing']
-    };
-
-    // good - git diff with trailing comma
-    const hero = {
-         firstName: 'Florence',
-         lastName: 'Nightingale',
-    +    inventorOf: ['coxcomb chart', 'modern nursing'],
-    };
-    ```
-
-    ```javascript
-    // bad
-    const hero = {
-      firstName: 'Dana',
-      lastName: 'Scully'
-    };
-
-    const heroes = [
-      'Batman',
-      'Superman'
-    ];
-
-    // good
-    const hero = {
-      firstName: 'Dana',
-      lastName: 'Scully',
-    };
-
-    const heroes = [
-      'Batman',
-      'Superman',
-    ];
-
-    // bad
-    function createHero(
-      firstName,
-      lastName,
-      inventorOf
-    ) {
-      // does nothing
-    }
-
-    // good
-    function createHero(
-      firstName,
-      lastName,
-      inventorOf,
-    ) {
-      // does nothing
-    }
-
-    // good (note that a comma must not appear after a "rest" element)
-    function createHero(
-      firstName,
-      lastName,
-      inventorOf,
-      ...heroArgs
-    ) {
-      // does nothing
-    }
-
-    // bad
-    createHero(
-      firstName,
-      lastName,
-      inventorOf
-    );
-
-    // good
-    createHero(
-      firstName,
-      lastName,
-      inventorOf,
-    );
-
-    // good (note that a comma must not appear after a "rest" element)
-    createHero(
-      firstName,
-      lastName,
-      inventorOf,
-      ...heroArgs
-    );
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -2688,28 +2549,6 @@ Other Style Guides
 
     // good
     const val = parseInt(inputValue, 10);
-    ```
-
-  <a name="coercion--comment-deviations"></a><a name="21.4"></a>
-  - [22.4](#coercion--comment-deviations) If for whatever reason you are doing something wild and `parseInt` is your bottleneck and need to use Bitshift for [performance reasons](https://jsperf.com/coercion-vs-casting/3), leave a comment explaining why and what you're doing.
-
-    ```javascript
-    // good
-    /**
-     * parseInt was the reason my code was slow.
-     * Bitshifting the String to coerce it to a
-     * Number made it a lot faster.
-     */
-    const val = inputValue >> 0;
-    ```
-
-  <a name="coercion--bitwise"></a><a name="21.5"></a>
-  - [22.5](#coercion--bitwise) **Note:** Be careful when using bitshift operations. Numbers are represented as [64-bit values](https://es5.github.io/#x4.3.19), but bitshift operations always return a 32-bit integer ([source](https://es5.github.io/#x11.7)). Bitshift can lead to unexpected behavior for integer values larger than 32 bits. [Discussion](https://github.com/airbnb/javascript/issues/109). Largest signed 32-bit Int is 2,147,483,647:
-
-    ```javascript
-    2147483647 >> 0; // => 2147483647
-    2147483648 >> 0; // => -2147483648
-    2147483649 >> 0; // => -2147483647
     ```
 
   <a name="coercion--booleans"></a><a name="21.6"></a>
