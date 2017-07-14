@@ -8,7 +8,7 @@
 
 Other Style Guides
 
-  - [CSS & Sass](https://github.com/airbnb/css)
+  - [CSS & Sass](https://github.com/cpapdotcom/usx-css-sass-style-guide)
 
 ## Table of Contents
 
