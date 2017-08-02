@@ -481,22 +481,8 @@ Other Style Guides
     }
     ```
 
-  <a name="destructuring--array"></a><a name="5.2"></a>
-  - [5.2](#destructuring--array) Use array destructuring. jscs: [`requireArrayDestructuring`](http://jscs.info/rule/requireArrayDestructuring)
-
-    ```javascript
-    const arr = [1, 2, 3, 4];
-
-    // bad
-    const first = arr[0];
-    const second = arr[1];
-
-    // good
-    const [first, second] = arr;
-    ```
-
-  <a name="destructuring--object-over-array"></a><a name="5.3"></a>
-  - [5.3](#destructuring--object-over-array) Use object destructuring for multiple return values, not array destructuring. jscs: [`disallowArrayDestructuringReturn`](http://jscs.info/rule/disallowArrayDestructuringReturn)
+  <a name="destructuring--object-over-array"></a><a name="5.2"></a>
+  - [5.2](#destructuring--object-over-array) Use object destructuring for multiple return values, not array destructuring. jscs: [`disallowArrayDestructuringReturn`](http://jscs.info/rule/disallowArrayDestructuringReturn)
 
     > Why? You can add new properties over time or change the order of things without breaking call sites.
 
@@ -539,7 +525,7 @@ Other Style Guides
     ```
 
   <a name="strings--line-length"></a><a name="6.2"></a>
-  - [6.2](#strings--line-length) Strings that cause the line to go over 175 characters should not be written across multiple lines using string concatenation but should use template strings.
+  - [6.2](#strings--line-length) Strings that cause the line to go over 175 characters should not be written across multiple lines using string concatenation. Template strings should be used whenever it is feasible to do so (meaning newlines will not affect the display or storage of the string), such as strings for HTML output.
 
     > Why? Broken strings are painful to work with and make code less readable and searchable.
 
@@ -555,17 +541,17 @@ Other Style Guides
       'of Batman. When you stop to think about how Batman had anything to do ' +
       'with this, you would get nowhere fast.';
 
-    // bad
+    // good
     const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
 
-    // good
+    // best
     const errorMessage = `This is a super long error that was thrown because
       of Batman. When you stop to think about how Batman had anything to do
       with this, you would get nowhere fast.`;
     ```
 
-  <a name="es6-template-literals"></a><a name="6.4"></a>
-  - [6.3](#es6-template-literals) When programmatically building up strings, use template strings instead of concatenation. eslint: [`prefer-template`](http://eslint.org/docs/rules/prefer-template.html) [`template-curly-spacing`](http://eslint.org/docs/rules/template-curly-spacing) jscs: [`requireTemplateStrings`](http://jscs.info/rule/requireTemplateStrings)
+  <a name="es6-template-literals"></a><a name="6.3"></a>
+  - [6.3](#es6-template-literals) When programmatically building up strings, use template strings or concatenation with the "+" operator. The braces of template string variables should *not* contain whitespace. eslint: [`prefer-template`](http://eslint.org/docs/rules/prefer-template.html) [`template-curly-spacing`](http://eslint.org/docs/rules/template-curly-spacing) jscs: [`requireTemplateStrings`](http://jscs.info/rule/requireTemplateStrings)
 
     > Why? Template strings give you a readable, concise syntax with proper newlines and string interpolation features.
 
@@ -646,9 +632,34 @@ Other Style Guides
 
   <a name="functions--in-blocks"></a><a name="7.3"></a>
   - [7.3](#functions--in-blocks) Never declare a function in a non-function block (`if`, `while`, etc). Assign the function to a variable instead. Browsers will allow you to do it, but they all interpret it differently, which is bad news bears. eslint: [`no-loop-func`](http://eslint.org/docs/rules/no-loop-func.html)
+  
+    > Why ECMA-262 defines a `block` as a list of statements. A function declaration is not a statement. [Read ECMA-262’s note on this issue](http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf#page=97).
+    
+    ```javascript
+    // bad
+    if (currentUser) {
+      function test() {
+        console.log('Nope.');
+      }
+    }
 
-  <a name="functions--arguments-shadow"></a><a name="7.5"></a>
-  - [7.5](#functions--arguments-shadow) Never name a parameter `arguments`. This will take precedence over the `arguments` object that is given to every function scope.
+    // good
+    let test;
+
+    if (currentUser) {
+      test = () => console.log('Yup.');
+    }
+
+    // best
+    const test = () => console.log('Yup.');
+
+    if (currentUser) {
+      test();
+    }
+    ```
+
+  <a name="functions--arguments-shadow"></a><a name="7.4"></a>
+  - [7.4](#functions--arguments-shadow) Never name a parameter `arguments`. This will take precedence over the `arguments` object that is given to every function scope.
 
     ```javascript
     // bad
@@ -662,8 +673,8 @@ Other Style Guides
     }
     ```
 
-  <a name="es6-rest"></a><a name="7.6"></a>
-  - [7.6](#es6-rest) Never use `arguments`, opt to use rest syntax `...` instead. eslint: [`prefer-rest-params`](http://eslint.org/docs/rules/prefer-rest-params)
+  <a name="es6-rest"></a><a name="7.5"></a>
+  - [7.5](#es6-rest) Never use `arguments`, opt to use rest syntax `...` instead. eslint: [`prefer-rest-params`](http://eslint.org/docs/rules/prefer-rest-params)
 
     > Why? `...` is explicit about which arguments you want pulled. Plus, rest arguments are a real Array, and not merely Array-like like `arguments`.
 
@@ -680,8 +691,8 @@ Other Style Guides
     }
     ```
 
-  <a name="es6-default-parameters"></a><a name="7.7"></a>
-  - [7.7](#es6-default-parameters) Use default parameter syntax rather than mutating function arguments.
+  <a name="es6-default-parameters"></a><a name="7.6"></a>
+  - [7.6](#es6-default-parameters) Use default parameter syntax rather than mutating function arguments.
 
     ```javascript
     // really bad
@@ -707,8 +718,8 @@ Other Style Guides
     }
     ```
 
-  <a name="functions--default-side-effects"></a><a name="7.8"></a>
-  - [7.8](#functions--default-side-effects) Avoid side effects with default parameters.
+  <a name="functions--default-side-effects"></a><a name="7.7"></a>
+  - [7.7](#functions--default-side-effects) Avoid side effects with default parameters.
 
     > Why? They are confusing to reason about.
 
@@ -724,8 +735,8 @@ Other Style Guides
     count();  // 3
     ```
 
-  <a name="functions--defaults-last"></a><a name="7.9"></a>
-  - [7.9](#functions--defaults-last) Always put default parameters last.
+  <a name="functions--defaults-last"></a><a name="7.8"></a>
+  - [7.8](#functions--defaults-last) Always put default parameters last.
 
     ```javascript
     // bad
@@ -739,8 +750,8 @@ Other Style Guides
     }
     ```
 
-  <a name="functions--constructor"></a><a name="7.10"></a>
-  - [7.10](#functions--constructor) Never use the Function constructor to create a new function. eslint: [`no-new-func`](http://eslint.org/docs/rules/no-new-func)
+  <a name="functions--constructor"></a><a name="7.9"></a>
+  - [7.19](#functions--constructor) Never use the Function constructor to create a new function. eslint: [`no-new-func`](http://eslint.org/docs/rules/no-new-func)
 
     > Why? Creating a function in this way evaluates a string similarly to eval(), which opens vulnerabilities.
 
@@ -752,8 +763,8 @@ Other Style Guides
     var subtract = Function('a', 'b', 'return a - b');
     ```
 
-  <a name="functions--signature-spacing"></a><a name="7.11"></a>
-  - [7.11](#functions--signature-spacing) Spacing in a function signature. eslint: [`space-before-function-paren`](http://eslint.org/docs/rules/space-before-function-paren) [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks)
+  <a name="functions--signature-spacing"></a><a name="7.10"></a>
+  - [7.10](#functions--signature-spacing) Spacing in a function signature. eslint: [`space-before-function-paren`](http://eslint.org/docs/rules/space-before-function-paren) [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks)
 
     > Why? Consistency is good, and the syntax is easier to read.
 
@@ -769,8 +780,8 @@ Other Style Guides
     const z = function a () {};
     ```
 
-  <a name="functions--mutate-params"></a><a name="7.12"></a>
-  - [7.12](#functions--mutate-params) Never mutate parameters. eslint: [`no-param-reassign`](http://eslint.org/docs/rules/no-param-reassign.html)
+  <a name="functions--mutate-params"></a><a name="7.11"></a>
+  - [7.11](#functions--mutate-params) Never mutate parameters. eslint: [`no-param-reassign`](http://eslint.org/docs/rules/no-param-reassign.html)
 
     > Why? Manipulating objects passed in as parameters can cause unwanted variable side effects in the original caller.
 
@@ -791,8 +802,8 @@ Other Style Guides
     }
     ```
 
-  <a name="functions--reassign-params"></a><a name="7.13"></a>
-  - [7.13](#functions--reassign-params) Never reassign parameters. eslint: [`no-param-reassign`](http://eslint.org/docs/rules/no-param-reassign.html)
+  <a name="functions--reassign-params"></a><a name="7.12"></a>
+  - [7.12](#functions--reassign-params) Never reassign parameters. eslint: [`no-param-reassign`](http://eslint.org/docs/rules/no-param-reassign.html)
 
     > Why? Reassigning parameters can lead to unexpected behavior, especially when accessing the `arguments` object. It can also cause optimization issues, especially in V8.
 
@@ -819,8 +830,8 @@ Other Style Guides
     }
     ```
 
-  <a name="functions--spread-vs-apply"></a><a name="7.14"></a>
-  - [7.14](#functions--spread-vs-apply) Prefer the use of the spread operator `...` to call variadic functions. eslint: [`prefer-spread`](http://eslint.org/docs/rules/prefer-spread)
+  <a name="functions--spread-vs-apply"></a><a name="7.13"></a>
+  - [7.13](#functions--spread-vs-apply) Prefer the use of the spread operator `...` to call variadic functions. eslint: [`prefer-spread`](http://eslint.org/docs/rules/prefer-spread)
 
     > Why? It’s cleaner, you don’t need to supply a context, and you can not easily compose `new` with `apply`.
 
@@ -841,7 +852,7 @@ Other Style Guides
     ```
 
   <a name="functions--signature-invocation-indentation"></a>
-  - [7.15](#functions--signature-invocation-indentation) Functions with four or less arguments may be on a single line unless the character column count exceeds 175. Functions with multiline signatures, or invocations, should be indented just like every other multiline list in this guide: with each item on a line by itself.
+  - [7.14](#functions--signature-invocation-indentation) Multiline function arguments should be used when it improves readability or when the character column count exceeds 175. Functions with multiline signatures, or invocations, should be indented just like every other multiline list in this guide: with each item on a line by itself.
 
     ```javascript
     // bad
@@ -851,7 +862,7 @@ Other Style Guides
       // ...
     }
 
-    function foo (too, many, parameters, for, single, line) {
+    function foo (probably, too, many, parameters, for, single, line) {
       // ...
     }
 
@@ -1061,7 +1072,7 @@ Other Style Guides
     ```
 
   <a name="constructors--chaining"></a><a name="9.3"></a>
-  - [9.3](#constructors--chaining) Methods can return `this` to help with method chaining.
+  - [9.3](#constructors--chaining) Methods should return `this` to help with method chaining unless a different return value is expected.
 
     ```javascript
     // bad
@@ -1080,14 +1091,18 @@ Other Style Guides
 
     // good
     class Jedi {
-      jump() {
+      jump () {
         this.jumping = true;
         return this;
       }
 
-      setHeight(height) {
+      setHeight (height) {
         this.height = height;
         return this;
+      }
+      
+      getHeight () {
+        return this.height;
       }
     }
 
@@ -1194,8 +1209,9 @@ Other Style Guides
 
     const cleanedArray = _pull(array, 1, 2);
 
-    if (is.sorted(array))
+    if (is.sorted(array)) {
         return true;
+    }
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -1633,40 +1649,6 @@ Other Style Guides
     // the same applies for `const`
     ```
 
-  <a name="variables--unary-increment-decrement"></a><a name="13.6"></a>
-  - [13.6](#variables--unary-increment-decrement) Avoid using unary increments and decrements (++, --). eslint [`no-plusplus`](http://eslint.org/docs/rules/no-plusplus)
-
-    > Why? Per the eslint documentation, unary increment and decrement statements are subject to automatic semicolon insertion and can cause silent errors with incrementing or decrementing values within an application. It is also more expressive to mutate your values with statements like `num += 1` instead of `num++` or `num ++`. Disallowing unary increment and decrement statements also prevents you from pre-incrementing/pre-decrementing values unintentionally which can also cause unexpected behavior in your programs.
-
-    ```javascript
-    // bad
-
-    const array = [1, 2, 3];
-    let num = 1;
-    num++;
-    --num;
-
-    let sum = 0;
-    let truthyCount = 0;
-    for (let i = 0; i < array.length; i++) {
-      let value = array[i];
-      sum += value;
-      if (value) {
-        truthyCount++;
-      }
-    }
-
-    // good
-
-    const array = [1, 2, 3];
-    let num = 1;
-    num += 1;
-    num -= 1;
-
-    const sum = array.reduce((a, b) => a + b, 0);
-    const truthyCount = array.filter(Boolean).length;
-    ```
-
 **[⬆ back to top](#table-of-contents)**
 
 ## Hoisting
@@ -1818,7 +1800,7 @@ Other Style Guides
 
     // bad
     if (collection.length > 0) {
-      // ...0
+      // ...
     }
 
     // good
@@ -1831,7 +1813,7 @@ Other Style Guides
   - [15.4](#comparison--moreinfo) For more information see [Truth Equality and JavaScript](https://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/#more-2108) by Angus Croll.
 
   <a name="comparison--switch-blocks"></a><a name="15.5"></a>
-  - [15.5](#comparison--switch-blocks) Use braces to create blocks in `case` and `default` clauses that contain lexical declarations (e.g. `let`, `const`, `function`, and `class`).
+  - [15.5](#comparison--switch-blocks) Always use braces to create blocks in `case` and `default` clauses.
 
     > Why? Lexical declarations are visible in the entire `switch` block but only get initialized when assigned, which only happens when its `case` is reached. This causes problems when multiple `case` clauses attempt to define the same thing.
 
@@ -1857,26 +1839,27 @@ Other Style Guides
 
     // good
     switch (foo) {
-      case 1: {
-        let x = 1;
-        break;
-      }
-      case 2: {
-        const y = 2;
-        break;
-      }
-      case 3: {
-        function f() {
-          // ...
+        case 1: {
+            let x = 1;
+            break;
         }
-        break;
-      }
-      case 4:
-        bar();
-        break;
-      default: {
-        class C {}
-      }
+        case 2: {
+            const y = 2;
+            break;
+        }
+        case 3: {
+            function f() {
+                // ...
+            }
+            break;
+        }
+        case 4: {
+            bar();
+            break;
+        }
+        default: {
+            class C {}
+        }
     }
     ```
 
@@ -1926,18 +1909,18 @@ Other Style Guides
 ## Blocks
 
   <a name="blocks--braces"></a><a name="16.1"></a>
-  - [16.1](#blocks--braces) Any single event block may forgo braces with proper newline indention. More than a single line must use braces. Use braces with all multi-line blocks.
+  - [16.1](#blocks--braces) Use braces with all multi-line blocks. Single line blocks are **not** allowed.
 
-    >Why? It's clean, it's concise, and removes superfluous braces code bloat since so many conditionals are followed by a single statement. Same line blocks without braces are difficult to spot at a glance.
+    >Why? Same line blocks without braces are difficult to spot at a glance.
 
     ```javascript
     // bad
     if (test) return false;
 
-    // good
     if (test)
         return false;
 
+    // good
     if (test) {
         return false;
     }
@@ -1978,7 +1961,7 @@ Other Style Guides
 ## Control Statements
 
   <a name="control-statements"></a>
-  - [17.1](#control-statements) In case your control statement (`if`, `while` etc.) gets too long or exceeds the maximum line length, each (grouped) condition could be put into a new line. It’s up to you whether the logical operator should begin or end the line.
+  - [17.1](#control-statements) In case your control statement (`if`, `while` etc.) gets too long or exceeds the maximum line length, each (grouped) condition should be put into a new line. The logical operator should begin the line.
 
     ```javascript
     // bad
@@ -1997,8 +1980,16 @@ Other Style Guides
       && bar === 'abc') {
       thing1();
     }
+    
+    // bad
+    if (
+      foo === 123 &&
+      bar === 'abc'
+    ) {
+      thing1();
+    }
 
-    // good
+    // bad
     if (
       (foo === 123 || bar === "abc") &&
       doesItLookGoodWhenItBecomesThatLong() &&
@@ -2009,23 +2000,24 @@ Other Style Guides
 
     // good
     if (foo === 123 && bar === 'abc') {
-      thing1();
+        thing1();
     }
 
     // good
     if (
-      foo === 123 &&
-      bar === 'abc'
+        foo === 123
+        && bar === 'abc'
     ) {
-      thing1();
+        thing1();
     }
-
+    
     // good
     if (
-      foo === 123
-      && bar === 'abc'
+        (foo === 123 || bar === 'abc')
+        && doesItLookGoodWhenItBecomesThatLong()
+        && isThisReallyHappening()
     ) {
-      thing1();
+        thing1();
     }
     ```
 
@@ -2505,8 +2497,104 @@ Other Style Guides
     };
     ```
 
-  <a name="commas--spacing"></a><a name="19.2"></a>
-  - [20.2](#commas--spacing) Single line values, parameters, imports, etc. should include a single space after the comma-separated entities.
+  <a name="commas--dangling"></a><a name="19.2"></a>
+  - [20.2](#commas--dangling) Additional trailing comma: **Yup.** eslint: [`comma-dangle`](http://eslint.org/docs/rules/comma-dangle.html) jscs: [`requireTrailingComma`](http://jscs.info/rule/requireTrailingComma)
+
+    > Why? This leads to cleaner git diffs. Also, transpilers like Babel will remove the additional trailing comma in the transpiled code which means you don’t have to worry about the [trailing comma problem](https://github.com/airbnb/javascript/blob/es5-deprecated/es5/README.md#commas) in legacy browsers.
+
+    ```diff
+    // bad - git diff without trailing comma
+    const hero = {
+         firstName: 'Florence',
+    -    lastName: 'Nightingale'
+    +    lastName: 'Nightingale',
+    +    inventorOf: ['coxcomb chart', 'modern nursing']
+    };
+
+    // good - git diff with trailing comma
+    const hero = {
+         firstName: 'Florence',
+         lastName: 'Nightingale',
+    +    inventorOf: ['coxcomb chart', 'modern nursing'],
+    };
+    ```
+
+    ```javascript
+    // bad
+    const hero = {
+      firstName: 'Dana',
+      lastName: 'Scully'
+    };
+
+    const heroes = [
+      'Batman',
+      'Superman'
+    ];
+
+    // good
+    const hero = {
+      firstName: 'Dana',
+      lastName: 'Scully',
+    };
+
+    const heroes = [
+      'Batman',
+      'Superman',
+    ];
+
+    // bad
+    function createHero(
+      firstName,
+      lastName,
+      inventorOf
+    ) {
+      // does nothing
+    }
+
+    // good
+    function createHero(
+      firstName,
+      lastName,
+      inventorOf,
+    ) {
+      // does nothing
+    }
+
+    // good (note that a comma must not appear after a "rest" element)
+    function createHero(
+      firstName,
+      lastName,
+      inventorOf,
+      ...heroArgs
+    ) {
+      // does nothing
+    }
+
+    // bad
+    createHero(
+      firstName,
+      lastName,
+      inventorOf
+    );
+
+    // good
+    createHero(
+      firstName,
+      lastName,
+      inventorOf,
+    );
+
+    // good (note that a comma must not appear after a "rest" element)
+    createHero(
+      firstName,
+      lastName,
+      inventorOf,
+      ...heroArgs
+    );
+    ```
+
+  <a name="commas--spacing"></a><a name="19.3"></a>
+  - [20.3](#commas--spacing) Single line values, parameters, imports, etc. should include a single space after the comma-separated entities.
 
     ```javascript
     // bad
@@ -2601,8 +2689,8 @@ Other Style Guides
     const val = parseInt(inputValue, 10);
     ```
 
-  <a name="coercion--booleans"></a><a name="21.6"></a>
-  - [22.6](#coercion--booleans) Booleans:
+  <a name="coercion--booleans"></a><a name="21.4"></a>
+  - [22.4](#coercion--booleans) Booleans:
 
     ```javascript
     const age = 0;
@@ -2808,7 +2896,7 @@ Other Style Guides
     ];
     ```
   <a name="naming--semantic"></a><a name="23.10"></a>
-  - [23.10](#naming--semantic) Variables, constants, methods, and functions should be complete words, not shorthand. Be semantic with your naming. eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
+  - [23.10](#naming--semantic) Variables, constants, methods, and functions should be complete words, not shorthand. Be semantic with your naming.
 
     > Why? Difficult and time consuming to implement a standard around all possible shorthand abbreviations. Shorthand abbreviations out of context can be difficult to understand. Just use the proper english language standard.
 
@@ -2835,6 +2923,8 @@ Other Style Guides
     ```javascript
     // bad
     const disabled = true;
+    const activeFlag = true;
+    const blnActive = false;
 
     const active = () => this.isActivated;
 
@@ -2922,38 +3012,6 @@ Other Style Guides
         return this[key];
       }
     }
-    ```
-
-**[⬆ back to top](#table-of-contents)**
-
-## Negation
-
-  <a name="negation--syntax"></a><a name="25.1"></a>
-  - [25.1](#negation--syntax) Negation exclamations should be followed by a single space. Wrapping negation in paranethesis can provide added readablility.
-
-    > Why? Easier to spot the negation action.
-
-    ```javascript
-    // bad
-    const value = !foo;
-
-    if (!bar)
-      return;
-
-    let isFaz = !!baz;
-
-    // good
-    const value = ! foo;
-
-    if (! bar)
-      return;
-
-    let isFaz = !! baz;
-
-    // best
-    const value = (! foo);
-
-    let isFaz = (!! baz);
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -3054,7 +3112,7 @@ Other Style Guides
     ```
 
   <a name="docblock--structure"></a><a name="27.2"></a>
-  - [27.2](#docblock--structure) Follow the conventions of [JSDoc](http://usejsdoc.org). Require a spacing newline between description and initial block tags. Require a spacing newline between different block tag groupings.
+  - [27.2](#docblock--structure) Follow the conventions of [JSDoc](http://usejsdoc.org). Require a spacing newline between description and initial block tags. A newline between different block tag groupings is optional.
 
     ```javascript
     // bad
@@ -3072,14 +3130,26 @@ Other Style Guides
      * @see https://github.com/airbnb/javascript
      * @return {Object}
      */
-
-    // good
+     
+     // good
     /**
      * Generates a pseudo-random number.
      *
      * @return {Number}
      */
 
+    /**
+     * Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
+     * dignissimos, odit unde tempore maxime deserunt nulla, debitis
+     * id culpa earum. Fugit in nam magnam.
+     *
+     * @param {Object}   foo    Consectetur adipisicing elit.
+     * @param {Function} barbaz Maxime deserunt nulla.
+     * @see https://github.com/airbnb/javascript
+     * @return {Object}
+     */
+
+    // best
     /**
      * Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia
      * dignissimos, odit unde tempore maxime deserunt nulla, debitis
