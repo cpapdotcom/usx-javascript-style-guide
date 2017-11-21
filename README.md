@@ -6,9 +6,11 @@
 [![Downloads](https://img.shields.io/npm/dm/eslint-config-airbnb-base.svg)](https://www.npmjs.com/package/eslint-config-airbnb-base)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/airbnb/javascript?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Other Style Guides
+##### Other Style Guides
 
-  - [CSS & Sass](https://github.com/cpapdotcom/usx-css-sass-style-guide)
+  - [USX Laravel: ModuleCow](https://github.com/cpapdotcom/usx-modulecow-style-guide)
+  - [USX CSS & Sass](https://github.com/cpapdotcom/usx-css-sass-style-guide)
+  - [USX Vue 2](https://github.com/cpapdotcom/usx-vue2-style-guide)
 
 ## Table of Contents
 
